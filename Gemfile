@@ -4,6 +4,17 @@ gem 'httparty'
 gem 'engtagger'
 gem 'nokogiri'
 
+# for authentication
+gem 'devise'
+gem 'rolify'
+gem 'authority'
+#for page view
+gem 'bootstrap-sass'
+gem 'simple_form'
+
+# email for developing
+gem 'letter_opener', group: :development
+
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.5'
 # Use mysql as the database for Active Record
