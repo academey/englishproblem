@@ -16,3 +16,5 @@
 //= require_tree .
 // Loads all Bootstrap javascripts
 //= require bootstrap
+//= require jquery
+//= require bootstrap-sprockets
