@@ -11,10 +11,15 @@
 </head>
 <body>
     <!-- Fixed navbar -->
-  <div class="navbar-collapse collapse">
-    <ul class="nav navbar-nav">
-      <li class="active"><%= link_to "Home", root_path %></li>
-      <li><%= link_to "Posts", "posts" %></li>
+
+  <h3 style='color:#52535A; align: center; float: center;'>&nbsp;&nbsp;창의설계 II POS Tagging을 이용한 영어 변형 문제 제작 소프트웨어</h3>
+
+  <nav style="background-color:#394558; " class="navbar navbar-default">
+    <ul  class="nav navbar-nav">
+      <!--<li class="active"><%= link_to "Home", root_path %></li>
+      <li><%= link_to "Posts", "/posts" %></li> -->
+      <li style='color: white;'><%= link_to "Introduction", "/home/introduce" %></a></li>
+      <li style='color: white;'><%= link_to "Problem", "/problem/index" %></a></li>
     </ul>
     <ul class="nav navbar-nav navbar-right">
       <% if user_signed_in? %>
@@ -30,9 +35,9 @@
         <li><%= link_to "Sign up", new_user_registration_path %></li>
       <% end %>
     </ul>
-  </div>
+  </nav>
 
-	<div class="container" style="padding: 70px 0px 0px 0px;">
+	<div class="container" style="padding: 0px 0px 0px 0px;">
 		<%= render partial: "shared/flash_messages", flash: flash %>
 		<%= yield %>
 	</div>

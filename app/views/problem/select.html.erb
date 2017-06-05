@@ -1,0 +1,184 @@
+<style>
+.left-box {
+float: left;
+width: 40%;
+background: white;
+border: 3px solid;
+}
+.right-box {
+float: right;
+width: 50%;
+background: white;
+border: 3px solid;
+}
+.middle-box {
+  float: left;
+  padding-top: 10%;
+  width: 10%;
+
+  background: white;
+
+}
+</style>
+
+<blockquote>
+  <h2 class='info'> 문제 생성 </h2>
+</blockquote>
+  <div class='jumbotron left-box'>
+    <h5>
+    <%
+      @tagged2DArray.each do |line|
+        line.each do |word|
+          if word['problem'] == '' %>
+            <%= word['wd']%>
+          <% else %>
+            <button type="button" class="btn btn-primary btn-xs problem" category="<%=word['problemKind']%>" paragraph="<%=word['problem']%>" aria-expanded="false"><%=word['wd']%></button>
+            <%
+          end
+        end
+      end
+    %>
+    </h5>
+  </div>
+<div class='middle-box'>
+  <img align='center' style='vertical-align:middle; margin-left: 25px;'  width ='60%' src='http://cfile1.uf.tistory.com/image/245B61445869E6A00E32ED'></img>
+</div>
+
+
+<div class='jumbotron right-box'>
+  <div class='container'>
+    <div class="btn-group btn-group-justified"  role="group" aria-label="...">
+      <div class="btn-group" role="group">
+        <button type="button" id ="context-category" class="btn btn-success">문맥</button>
+      </div>
+      <div class="btn-group" role="group" >
+        <button type="button" id ="grammar-category" class="btn btn-warning">문법</button>
+      </div>
+    </div>
+    <div class="btn-group btn-group-justified" id ='context-category-group'role="group" aria-label="...">
+      <div class="btn-group" role="group">
+        <button type="button" id='ant_adj'class="btn btn-default">어휘 선택 문제</button>
+      </div>
+      <div class="btn-group" role="group">
+        <button type="button" id='conjunction' class="btn btn-default">연결사 접속사</button>
+      </div>
+    </div>
+    <div class="btn-group btn-group-justified" id ='grammar-category-group'role="group" aria-label="...">
+      <div class="btn-group" role="group">
+        <button type="button" id='adv_to_adj' class="btn btn-default">부사 형용사</button>
+      </div>
+      <div class="btn-group" role="group">
+        <button type="button" id='tense_change'class="btn btn-default">시제 변형</button>
+      </div>
+      <div class="btn-group" role="group">
+        <button type="button" id='relative_pronoun'class="btn btn-default">관계대명사</button>
+      </div>
+    </div>
+
+
+    <h5><b id ='question'>다음 글의 밑줄 친 부분 중, 문맥상 낱말의 쓰임이 적절하지 않은 것은?<b></h5>
+    <h5 id ='paragraph'>문제문제문제</h5>
+
+    <nav aria-label="Page navigation" align="center">
+      <ul class="pagination">
+        <li>
+          <a href="#" aria-label="Previous">
+            <span aria-hidden="true">&laquo;</span>
+          </a>
+        </li>
+        <li><a class='active' href="#">1</a></li>
+        <li><a href="#">2</a></li>
+        <li><a href="#">3</a></li>
+        <li><a href="#">4</a></li>
+        <li><a href="#">5</a></li>
+        <li>
+          <a href="#" aria-label="Next">
+            <span aria-hidden="true">&raquo;</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+    <div align='center'>
+      <button align="center" id="add-problem" type="button" class="btn btn-default">추가!</button>
+    </div>
+  </div>
+</div>
+<script>
+$(document).ready(function(){
+  $('#add-problem').click(function(){
+    alert('문제가 추가되었습니다.');
+  });
+  $('.problem-grammar').click(function(){
+    alert($(this).val());
+  });
+  $('.problem').click(function(){
+    var category = $(this).attr('category');
+    var paragraph = $(this).attr('paragraph');
+    $('#paragraph').html(paragraph);
+
+    switch (category){
+      case 'adv_to_adj':
+          $('#context-category').removeClass("active");
+          $('#grammar-category').addClass("active");
+          $('#context-category-group').hide();
+          $('#grammar-category-group').show();
+
+          $('#adv_to_adj').addClass("active");
+          $('#tense_change').removeClass("active");
+          $('#relative_pronoun').removeClass("active");
+
+          $('#question').html('다음 글의 밑줄 친 부분 중, 어법상 <u>틀린</u> 것은?');
+          break;
+      case 'tense_change':
+          $('#context-category').removeClass("active");
+          $('#grammar-category').addClass("active");
+          $('#context-category-group').hide();
+          $('#grammar-category-group').show();
+
+          $('#adv_to_adj').removeClass("active");
+          $('#tense_change').addClass("active");
+          $('#relative_pronoun').removeClass("active");
+
+          $('#question').html('다음 글의 밑줄 친 부분 중, 어법상 <u>틀린</u> 것은?');
+          break;
+      case 'relative_pronoun':
+          $('#context-category').removeClass("active");
+          $('#grammar-category').addClass("active");
+          $('#context-category-group').hide();
+          $('#grammar-category-group').show();
+
+          $('#adv_to_adj').removeClass("active");
+          $('#tense_change').removeClass("active");
+          $('#relative_pronoun').addClass("active");
+
+          $('#question').html('다음 글의 밑줄 친 부분 중, 어법상 <u>틀린</u> 것은?');
+          break;
+
+
+      case 'ant_adj':
+          $('#context-category').addClass("active");
+          $('#grammar-category').removeClass("active");
+          $('#context-category-group').show();
+          $('#grammar-category-group').hide();
+
+          $('#ant_adj').addClass("active");
+          $('#conjunction').removeClass("active");
+          break;
+      case 'conjunction':
+          $('#context-category').addClass("active");
+          $('#grammar-category').removeClass("active");
+          $('#context-category-group').show();
+          $('#grammar-category-group').hide();
+
+          $('#ant_adj').removeClass("active");
+          $('#conjunction').addClass("active");
+          break;
+
+    }
+
+    //alert($(this).val());
+
+  });
+
+});
+</script>

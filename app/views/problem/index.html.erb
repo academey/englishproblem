@@ -1,0 +1,110 @@
+<head>
+  <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+</head>
+<blockquote>
+  <h2 class='info'> 변형 문제 제작용 영어 원문 입력하기 </h2>
+</blockquote>
+
+
+<h3 id="loading"></h3>
+<div class="form-group">
+  <form id="target" method="post" action="/problem/select" enctype='application/json'>
+    <input type="hidden" name="problem_list" value="">
+    <input type="hidden" name="tagged_2D_array" value="">
+    <input type="hidden" name="case_list" value="">
+    <textarea class="form-control" rows="10" id="textarea">Organic food production is growing by leaps and bounds. Many consumers are willing to pay premium prices for organic foods, convinced that they are helping the earth and eating healthier. Some experts say, however, that organic farming has some drawbacks. One of the most frequent criticisms is that the crop yields of organic farms are much lower than those of traditional farms. That’s because organic fields suffer more from weeds and insects than conventional fields. Another argument often offered by experts is that organic farming can supply food for niche markets of wealthy consumers but cannot feed billions of hungry people around the globe. Only the careful use of chemical inputs, not the costly organic methods, can help boost food production significantly in the countries facing hunger.</textarea>
+    <label class="checkbox-inline">
+      <input type="checkbox" id="inlineCheckbox1" value="option1"> 고등학교 1학년
+    </label>
+    <label class="checkbox-inline">
+      <input type="checkbox" id="inlineCheckbox2" value="option2"> 고등학교 2학년
+    </label>
+    <label class="checkbox-inline">
+      <input type="checkbox" id="inlineCheckbox3" value="option3"> 고등학교 3학년
+    </label>
+    <button type="button" style="float: right;" class="btn" id="empty_textarea">지우기</button>
+    <button type="button" style="float: right;" class="btn btn-default" id="form_submit">완료!</button>
+
+  </form>
+</div>
+
+
+<script>
+/*function trim(str)
+{
+  return this.replace(/(^\s*)|(\s*$)/gi, "");
+}*/
+
+$(document).ready(function(){
+  $("#textarea").keypress(function(event){
+     if ((event.charCode >= 32 && event.charCode <= 64) || // space & 0-9
+         (event.charCode >= 65 && event.charCode <= 90) || // A-Z
+         (event.charCode >= 97 && event.charCode <= 122) // a-z
+       ){
+     }else{
+       alert("영어, 숫자, 특수기호만 입력할 수 있습니다.");
+     }
+  });
+
+  $('#empty_textarea').click(function(){
+      if (confirm("지우겠습니까?")){
+          $('#textarea').val('');
+      }
+  });
+  $('#form_submit').click(function(){
+    //textarea = trim($('#textarea').val());
+    textarea = $('#textarea').val();
+
+
+    if(textarea.length < 30){
+      alert("너무 글자 수가 적습니다.");
+    }else{
+      if(confirm("문제를 생성하겠습니까?")){
+        $("#loading").text("문제 제작 중").show();
+        $("#textarea").prop('disabled',true);
+        $("#empty_textarea").prop('disabled',true);
+        $("#form_submit").prop('disabled',true);
+        $.ajax({
+          method:"POST",
+          url:"/problem/makingProblem",
+          dataType :"json",
+          data : { textarea: textarea},
+          //contentType: "application/json; charset=utf-8",
+
+          success:function(result){
+            //console.log(result);
+            //console.log(result['tagged2DArray']);
+            //console.log(result['tagged2DArray'][0][0]['li']);
+            var problemNum = 0;
+            console.log(result['problemList']);
+            $.each( result['problemList'], function( i, val ) {
+              problemNum += val.length;
+            });
+            if(problemNum > 5){
+              $("#loading").text("문제 생성 완료!").show();
+              $("input[name=problem_list]").val(JSON.stringify(result['problemList']));
+              $("input[name=tagged_2D_array]").val(JSON.stringify(result['tagged2DArray']));
+              $("input[name=case_list]").val(JSON.stringify(result['caseList']));
+              console.log(JSON.stringify(result['tagged2DArray']));
+              $('#target').attr('validated',true);
+              $('#target').submit();
+            }else{
+              $("#loading").text("충분한 문제 안 나옴!").show();
+              $("#textarea").prop('disabled',false);
+              $("#empty_textarea").prop('disabled',false);
+              $("#form_submit").prop('disabled',false);
+            }
+          },
+          error:function(e){
+             alert(e.responseText);
+          },
+
+        });
+      }
+    }
+  });
+
+
+});
+</script>
